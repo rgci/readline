@@ -123,6 +123,12 @@ func doInternal(p PrefixCompleterInterface, line []rune, pos int, origLine []run
 		}
 
 		for _, childName := range childNames {
+			if ok && childDynamic.IsDynamic() && child.GetChildren() == nil {
+				newLine = append(newLine, childName)
+				offset = len(line)
+				lineCompleter = child
+				continue
+			}
 			if len(line) >= len(childName) {
 				if runes.HasPrefix(line, childName) {
 					if len(line) == len(childName) {
@@ -140,11 +146,6 @@ func doInternal(p PrefixCompleterInterface, line []rune, pos int, origLine []run
 					offset = len(line)
 					lineCompleter = child
 				}
-			}
-			if childDynamic.IsDynamic() && child.GetChildren() == nil {
-				newLine = append(newLine, childName)
-				offset = len(line)
-				lineCompleter = child
 			}
 		}
 	}
