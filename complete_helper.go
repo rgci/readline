@@ -141,6 +141,11 @@ func doInternal(p PrefixCompleterInterface, line []rune, pos int, origLine []run
 					lineCompleter = child
 				}
 			}
+			if childDynamic.IsDynamic() && child.GetChildren() == nil {
+				newLine = append(newLine, childName)
+				offset = len(line)
+				lineCompleter = child
+			}
 		}
 	}
 
